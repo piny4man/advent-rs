@@ -1,15 +1,12 @@
-use std::{env, fs};
+use std::{fs, path::Path};
 
 fn main() {
-    let args: Vec<String> = env::args().collect();
-    let parsed_calories = parse_calories(&args);
-
+    let parsed_calories = parse_calories();
     find_max_calories(parsed_calories)
 }
 
-fn parse_calories(args: &[String]) -> String {
-    let file_path = &args[1];
-    fs::read_to_string(file_path).expect("Should contain elves calories!")
+fn parse_calories() -> String {
+    fs::read_to_string(Path::new("calories_notes.txt")).expect("Should contain elves calories!")
 }
 
 fn find_max_calories(notes_calories: String) {
