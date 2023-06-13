@@ -28,18 +28,18 @@ impl From<Movements> for i32 {
     }
 }
 
-enum Result {
+enum TurnResult {
     Win,
     Draw,
     Lose,
 }
 
-impl From<Result> for i32 {
-    fn from(result: Result) -> i32 {
+impl From<TurnResult> for i32 {
+    fn from(result: TurnResult) -> i32 {
         match result {
-            Result::Win => 6,
-            Result::Draw => 3,
-            Result::Lose => 0,
+            TurnResult::Win => 6,
+            TurnResult::Draw => 3,
+            TurnResult::Lose => 0,
         }
     }
 }
@@ -62,9 +62,10 @@ fn play_turns(turns: String) {
             let turn_movements: Vec<&str> = turn.split_whitespace().collect();
             let player1_movement = Movements::from_str(turn_movements[0]).unwrap();
             let player2_movement = Movements::from_str(turn_movements[1]).unwrap();
-            let result = compare_movements(player1_movement, player2_movement);
-            player1_score += i32::from(result) + i32::from(player1_movement);
-            player2_score += i32::from(result) + i32::from(player2_movement);
+            let player1_result = compare_movements(&player1_movement, &player2_movement);
+            let player2_result = compare_movements(&player2_movement, &player1_movement);
+            player1_score += i32::from(player1_result) + i32::from(player1_movement);
+            player2_score += i32::from(player2_result) + i32::from(player2_movement);
         }
     }
 
@@ -72,16 +73,16 @@ fn play_turns(turns: String) {
     println!("Player 2 score: {:?}", player2_score);
 }
 
-fn compare_movements(player1_movement: Movements, player2_movement: Movements) -> Result {
+fn compare_movements(player1_movement: &Movements, player2_movement: &Movements) -> TurnResult {
     match (player1_movement, player2_movement) {
-        (Movements::Rock, Movements::Rock) => Result::Draw,
-        (Movements::Rock, Movements::Paper) => Result::Lose,
-        (Movements::Rock, Movements::Scissors) => Result::Win,
-        (Movements::Paper, Movements::Rock) => Result::Win,
-        (Movements::Paper, Movements::Paper) => Result::Draw,
-        (Movements::Paper, Movements::Scissors) => Result::Lose,
-        (Movements::Scissors, Movements::Rock) => Result::Lose,
-        (Movements::Scissors, Movements::Paper) => Result::Win,
-        (Movements::Scissors, Movements::Scissors) => Result::Draw,
+        (Movements::Rock, Movements::Rock) => TurnResult::Draw,
+        (Movements::Rock, Movements::Paper) => TurnResult::Lose,
+        (Movements::Rock, Movements::Scissors) => TurnResult::Win,
+        (Movements::Paper, Movements::Rock) => TurnResult::Win,
+        (Movements::Paper, Movements::Paper) => TurnResult::Draw,
+        (Movements::Paper, Movements::Scissors) => TurnResult::Lose,
+        (Movements::Scissors, Movements::Rock) => TurnResult::Lose,
+        (Movements::Scissors, Movements::Paper) => TurnResult::Win,
+        (Movements::Scissors, Movements::Scissors) => TurnResult::Draw,
     }
 }
