@@ -24,8 +24,8 @@ fn main() {
                 .unwrap()
         })
         .collect::<Vec<(usize, usize, usize)>>();
-    print!("{:?}", move_boxes(&movements, stacks.clone()));
-    print!("{:?}", move_multiple_boxes(&movements, stacks));
+    println!("{:?}", move_boxes(&movements, stacks.clone()));
+    println!("{:?}", move_multiple_boxes(&movements, stacks));
 }
 
 fn move_boxes(movements: &[(usize, usize, usize)], mut stacks: Vec<Vec<char>>) -> String {
